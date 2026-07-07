@@ -1,6 +1,6 @@
 # Dashboard Looker Studio
 
-📊 Link: **[ganti dengan link dashboard, pastikan akses "Anyone with the link can view"]**
+📊 Link: **[https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7]**
 
 ## Preview
 
