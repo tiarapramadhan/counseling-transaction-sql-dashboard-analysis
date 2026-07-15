@@ -124,7 +124,7 @@ Hubungan antar tabel:
 - Mengurutkan berdasarkan total pengeluaran terbesar.
 - Menampilkan **10 pelanggan teratas**.
 
-### SQL Concepts
+### 🧠 SQL Techniques Used
 
 - WHERE
 - GROUP BY
@@ -132,13 +132,13 @@ Hubungan antar tabel:
 - ORDER BY
 - LIMIT
 
-**Query:**
+### 📄 SQL Solution
 
-```
-SQL/(1) Top Spender User.sql
-```
+Implementasi SQL dapat dilihat pada file berikut:
 
-### Business Insight
+➡️ **[(1) Top Spender User.sql](<SQL/(1) Top Spender User.sql>)**
+
+### 💡 Business Insight
 
 Analisis ini membantu mengidentifikasi pelanggan dengan nilai transaksi tertinggi yang berpotensi menjadi target program loyalitas maupun penawaran layanan premium.
 
@@ -156,23 +156,23 @@ Analisis ini membantu mengidentifikasi pelanggan dengan nilai transaksi tertingg
 - Menghitung total penjualan setiap cluster.
 - Mengurutkan berdasarkan tahun dan total penjualan.
 
-### SQL Concepts
+### 🧠 SQL Techniques Used
 
 - LEFT JOIN
 - EXTRACT()
 - GROUP BY
-- Aggregation
+- SUM()
 - ORDER BY
 
-**Query:**
+### 📄 SQL Solution
 
-```
-SQL/(2) Total Penjualan per Cluster per Tahun.sql
-```
+Implementasi SQL dapat dilihat pada file berikut:
 
-### Business Insight
+➡️ **[(2) Total Penjualan per Cluster per Tahun.sql](<SQL/(2) Total Penjualan per Cluster per Tahun.sql>)**
 
-Analisis ini membantu perusahaan memahami kontribusi masing-masing cluster terhadap pendapatan pada setiap tahun sehingga dapat menjadi dasar evaluasi performa layanan.
+### 💡 Business Insight
+
+Analisis ini membantu perusahaan memahami kontribusi masing-masing cluster terhadap pendapatan setiap tahun sehingga dapat menjadi dasar evaluasi performa layanan.
 
 ---
 
@@ -187,7 +187,7 @@ Analisis ini membantu perusahaan memahami kontribusi masing-masing cluster terha
 - Menggunakan **ROW_NUMBER()** untuk membuat ranking.
 - Menampilkan tiga paket terbaik pada setiap kategori.
 
-### SQL Concepts
+### 🧠 SQL Techniques Used
 
 - Window Function
 - ROW_NUMBER()
@@ -195,13 +195,13 @@ Analisis ini membantu perusahaan memahami kontribusi masing-masing cluster terha
 - LEFT JOIN
 - Subquery
 
-**Query:**
+### 📄 SQL Solution
 
-```
-SQL/(3) Penjualan Paket Tertinggi per packageType.sql
-```
+Implementasi SQL dapat dilihat pada file berikut:
 
-### Business Insight
+➡️ **[(3) Penjualan Paket Tertinggi per packageType.sql](<SQL/(3) Penjualan Paket Tertinggi per packageType.sql>)**
+
+### 💡 Business Insight
 
 Analisis ini membantu perusahaan mengetahui paket dengan performa terbaik pada masing-masing kategori layanan sehingga dapat menjadi acuan strategi promosi maupun pengembangan produk.
 
@@ -211,9 +211,9 @@ Analisis ini membantu perusahaan mengetahui paket dengan performa terbaik pada m
 
 Seluruh hasil analisis kemudian divisualisasikan menggunakan **Looker Studio** agar lebih mudah dipahami oleh stakeholder non-teknis.
 
-🔗 **Dashboard Looker Studio**
+### 🔗 Interactive Dashboard
 
-https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7
+**https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7**
 
 ---
 
@@ -227,7 +227,7 @@ https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7
 
 # 📈 Dashboard Features
 
-Dashboard menampilkan berbagai metrik utama, antara lain:
+Dashboard menyajikan berbagai metrik utama, antara lain:
 
 - Total Revenue
 - Total Transactions
@@ -243,10 +243,10 @@ Dashboard menampilkan berbagai metrik utama, antara lain:
 
 # 💡 Key Findings
 
-Beberapa insight utama yang diperoleh dari hasil analisis:
+Berdasarkan hasil analisis, diperoleh beberapa insight utama:
 
-- Paket **konseling** menghasilkan total revenue tertinggi dibandingkan kategori layanan lainnya.
-- Sekitar **74,8% transaksi berhasil diselesaikan**, menunjukkan mayoritas pembayaran berstatus sukses.
+- Paket **konseling** menghasilkan revenue tertinggi dibandingkan kategori layanan lainnya.
+- Sekitar **74,8% transaksi** berhasil diselesaikan, menunjukkan mayoritas pembayaran berstatus sukses.
 - Revenue menunjukkan distribusi yang berbeda pada setiap cluster layanan.
 - Sejumlah pelanggan memiliki total transaksi jauh di atas rata-rata sehingga berpotensi menjadi target program retensi pelanggan.
 
@@ -302,7 +302,7 @@ Repository ini disusun untuk memisahkan dataset, query SQL, dan dashboard sehing
 ### SQL
 
 - Multi-table JOIN
-- Aggregation
+- Data Aggregation
 - Window Functions
 - Ranking
 - Filtering
@@ -323,4 +323,4 @@ Project ini merupakan studi kasus analisis data transaksi layanan konseling meng
 
 Melalui tiga business question yang diberikan, dilakukan proses analisis terhadap database relasional untuk menghasilkan insight bisnis yang relevan, kemudian divisualisasikan ke dalam dashboard interaktif agar lebih mudah dipahami oleh stakeholder.
 
-Selain menunjukkan kemampuan menulis query SQL, project ini juga menggambarkan proses berpikir seorang Data Analyst dalam memahami kebutuhan bisnis, mengolah data relasional, serta menyampaikan hasil analisis dalam bentuk yang siap digunakan sebagai pendukung pengambilan keputusan.
+Selain menunjukkan kemampuan menulis query SQL, project ini juga menggambarkan proses berpikir seorang Data Analyst dalam memahami kebutuhan bisnis, mengolah data relasional, serta menyampaikan hasil analisis dalam bentuk visual yang siap digunakan sebagai pendukung pengambilan keputusan.
