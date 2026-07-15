@@ -1,44 +1,35 @@
 # 📊 Counseling Transaction SQL & Dashboard Analysis
 
-Analisis data transaksi layanan konseling & meditasi menggunakan **PostgreSQL** untuk menjawab kebutuhan bisnis melalui query SQL, kemudian divisualisasikan menggunakan **Looker Studio** dalam bentuk dashboard interaktif yang mudah dipahami oleh stakeholder.
+Analisis data transaksi layanan konseling & meditasi menggunakan **PostgreSQL** untuk menjawab tiga business question pada studi kasus Data Analyst, kemudian divisualisasikan menggunakan **Looker Studio** agar insight lebih mudah dipahami oleh stakeholder.
 
 ---
 
 # 🏢 Business Context
 
-Sebuah platform layanan **konseling** dan **meditasi** ingin memahami performa transaksi, perilaku pelanggan, serta kontribusi masing-masing layanan terhadap pendapatan perusahaan.
+Project ini merupakan penyelesaian **Take Home Test – Data Analyst (Study Case 1)** yang berfokus pada analisis data transaksi layanan konseling dan meditasi.
 
-Data transaksi tersimpan dalam tiga tabel relasional sehingga diperlukan proses analisis menggunakan SQL untuk menjawab beberapa kebutuhan bisnis, kemudian menyajikan hasilnya dalam bentuk dashboard yang mudah dipahami oleh stakeholder non-teknis.
+Dataset terdiri dari tiga tabel relasional (Payments, Packages, dan Clusters). Melalui SQL, project ini menjawab tiga business question utama dan menyajikan hasil analisis dalam dashboard interaktif.
 
 ---
 
 # 🎯 Project Objectives
 
-Project ini bertujuan untuk:
-
-- Mengidentifikasi pelanggan dengan total pengeluaran (spend) tertinggi.
-- Menganalisis total penjualan setiap cluster layanan berdasarkan tahun.
-- Menentukan paket dengan performa penjualan terbaik pada masing-masing jenis layanan.
-- Menyajikan hasil analisis dalam dashboard interaktif sebagai pendukung pengambilan keputusan.
+- Menjawab tiga business question menggunakan SQL.
+- Mengolah data relasional melalui JOIN, agregasi, dan window function.
+- Menghasilkan insight bisnis dari data transaksi.
+- Menyajikan hasil analisis dalam dashboard interaktif.
 
 ---
 
 # 📂 Dataset Overview
 
-Dataset berasal dari **Database.xlsx** yang terdiri dari tiga tabel relasional.
-
 | Tabel | Jumlah Data | Deskripsi |
 | --- | ---: | --- |
-| Payments | 16.603 | Data transaksi pembayaran pelanggan |
-| Packages | 81 | Master data paket layanan |
-| Clusters | 18 | Master kategori layanan konseling |
+| Payments | 16.603 | Data transaksi pembayaran |
+| Packages | 81 | Master data paket |
+| Clusters | 18 | Master data cluster layanan |
 
-### Ringkasan Dataset
-
-- **Periode data:** Januari 2024 – Desember 2025
-- **Total transaksi:** 16.603
-- **Total pengguna unik:** 10.103
-- **Database:** Relasional (3 tabel)
+**Periode data:** Januari 2024 – Desember 2025
 
 ---
 
@@ -46,85 +37,51 @@ Dataset berasal dari **Database.xlsx** yang terdiri dari tiga tabel relasional.
 
 ```mermaid
 erDiagram
-    PAYMENTS }o--|| PACKAGES : "packageId → id"
-    PACKAGES }o--|| CLUSTERS : "clusterId → id"
-
-    PAYMENTS {
-        int id
-        int userId
-        int packageId
-        string paymentType
-        int grandTotal
-        string status
-        datetime createdAt
-    }
-
-    PACKAGES {
-        int id
-        string name
-        string packageType
-        int totalSession
-        string category
-        int clusterId
-    }
-
-    CLUSTERS {
-        int id
-        string name
-        int duration
-        string type
-        string tier
-    }
+    PAYMENTS }o--|| PACKAGES : packageId
+    PACKAGES }o--|| CLUSTERS : clusterId
 ```
-
-Hubungan antar tabel:
-
-- **Payments** menyimpan seluruh transaksi pelanggan.
-- **Packages** menyimpan informasi paket yang dibeli.
-- **Clusters** menyimpan kategori layanan konseling.
-- Analisis tertentu membutuhkan proses **multi-table JOIN** karena informasi cluster tidak tersedia langsung pada tabel transaksi.
 
 ---
 
 # 🔄 Analytical Workflow
 
 ```text
-📥 Database.xlsx
-        │
-        ▼
-🔍 Data Understanding
-        │
-        ▼
-🗂 Relationship Analysis
-        │
-        ▼
-💻 SQL Query Development
-        │
-        ▼
-📊 Business Analysis
-        │
-        ▼
-📈 Dashboard Development
-        │
-        ▼
-💡 Business Insights
+Database.xlsx
+      │
+      ▼
+Data Understanding
+      │
+      ▼
+Relationship Analysis
+      │
+      ▼
+SQL Query Development
+      │
+      ▼
+Business Analysis
+      │
+      ▼
+Looker Studio Dashboard
+      │
+      ▼
+Business Insight
 ```
 
 ---
 
 # 📌 Business Question 1
 
-## Siapa pelanggan dengan total pengeluaran (spend) tertinggi?
+## Top Spender User
 
 ### Analytical Approach
 
-- Menggunakan hanya transaksi dengan status **success**.
-- Mengelompokkan transaksi berdasarkan **userId**.
-- Menghitung total pengeluaran menggunakan **SUM(grandTotal)**.
-- Mengurutkan berdasarkan total pengeluaran terbesar.
-- Menampilkan **10 pelanggan teratas**.
+- Filter transaksi `success`
+- Hitung total spend menggunakan `SUM(grandTotal)`
+- Kelompokkan berdasarkan `userId`
+- Urutkan dari terbesar
+- Ambil 10 user teratas
 
-### 🧠 SQL Techniques Used
+### 🧠 SQL Concepts Applied
 
 - WHERE
 - GROUP BY
@@ -134,143 +91,108 @@ Hubungan antar tabel:
 
 ### 📄 SQL Solution
 
-Implementasi SQL dapat dilihat pada file berikut:
-
 ➡️ **[(1) Top Spender User.sql](<SQL/(1) Top Spender User.sql>)**
 
 ### 💡 Business Insight
 
-Analisis ini membantu mengidentifikasi pelanggan dengan nilai transaksi tertinggi yang berpotensi menjadi target program loyalitas maupun penawaran layanan premium.
+Mengidentifikasi pelanggan dengan nilai transaksi tertinggi sebagai kandidat program loyalitas maupun layanan premium.
 
 ---
 
 # 📌 Business Question 2
 
-## Bagaimana performa penjualan setiap cluster layanan pada tiap tahun?
+## Total Penjualan per Cluster per Tahun
 
 ### Analytical Approach
 
-- Memfilter transaksi dengan status **success**.
-- Melakukan **LEFT JOIN** antara tabel Payments, Packages, dan Clusters.
-- Mengekstrak tahun transaksi menggunakan **EXTRACT(YEAR)**.
-- Menghitung total penjualan setiap cluster.
-- Mengurutkan berdasarkan tahun dan total penjualan.
+- Filter transaksi `success`
+- Melakukan **JOIN** antara tabel Payments, Packages, dan Clusters
+- Melakukan casting `createdAt` dari **VARCHAR** menjadi **TIMESTAMP**
+- Mengambil tahun menggunakan `EXTRACT(YEAR)`
+- Menghitung total penjualan tiap cluster
+- Mengurutkan berdasarkan tahun dan total penjualan
 
-### 🧠 SQL Techniques Used
+### 🧠 SQL Concepts Applied
 
-- LEFT JOIN
+- JOIN
 - EXTRACT()
 - GROUP BY
 - SUM()
 - ORDER BY
+- Type Casting (`::timestamp`)
 
 ### 📄 SQL Solution
-
-Implementasi SQL dapat dilihat pada file berikut:
 
 ➡️ **[(2) Total Penjualan per Cluster per Tahun.sql](<SQL/(2) Total Penjualan per Cluster per Tahun.sql>)**
 
 ### 💡 Business Insight
 
-Analisis ini membantu perusahaan memahami kontribusi masing-masing cluster terhadap pendapatan setiap tahun sehingga dapat menjadi dasar evaluasi performa layanan.
+Membandingkan performa penjualan setiap cluster pada masing-masing tahun sehingga memudahkan evaluasi kontribusi layanan.
 
 ---
 
 # 📌 Business Question 3
 
-## Paket apa saja yang memiliki penjualan tertinggi pada setiap jenis layanan?
+## Top 3 Package pada Setiap Package Type
 
 ### Analytical Approach
 
-- Menghitung total penjualan setiap paket.
-- Mengelompokkan berdasarkan **packageType**.
-- Menggunakan **ROW_NUMBER()** untuk membuat ranking.
-- Menampilkan tiga paket terbaik pada setiap kategori.
+- Hitung total penjualan tiap package
+- Kelompokkan berdasarkan `packageType`
+- Gunakan `ROW_NUMBER() OVER(PARTITION BY ...)`
+- Ambil tiga package terbaik di setiap kategori
 
-### 🧠 SQL Techniques Used
+### 🧠 SQL Concepts Applied
 
+- LEFT JOIN
 - Window Function
 - ROW_NUMBER()
 - PARTITION BY
-- LEFT JOIN
+- GROUP BY
+- CASE
 - Subquery
 
 ### 📄 SQL Solution
-
-Implementasi SQL dapat dilihat pada file berikut:
 
 ➡️ **[(3) Penjualan Paket Tertinggi per packageType.sql](<SQL/(3) Penjualan Paket Tertinggi per packageType.sql>)**
 
 ### 💡 Business Insight
 
-Analisis ini membantu perusahaan mengetahui paket dengan performa terbaik pada masing-masing kategori layanan sehingga dapat menjadi acuan strategi promosi maupun pengembangan produk.
+Menunjukkan paket dengan performa penjualan terbaik pada setiap kategori layanan sehingga dapat menjadi dasar evaluasi produk.
 
 ---
 
-# 📊 Dashboard Overview
+# 📊 Dashboard
 
-Seluruh hasil analisis kemudian divisualisasikan menggunakan **Looker Studio** agar lebih mudah dipahami oleh stakeholder non-teknis.
+Dashboard dibangun menggunakan **Looker Studio** berdasarkan dataset yang sama untuk menyajikan ringkasan performa transaksi secara visual.
 
-### 🔗 Interactive Dashboard
+👉 **https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7**
 
-**https://datastudio.google.com/reporting/b8844fa7-c77a-48ba-86d6-f3c3573891c7**
+## Dashboard Features
 
----
-
-# 🖼 Dashboard Preview
-
-<p align="center">
-<img src="Dashboard/assets/dashboard_preview.png" width="100%">
-</p>
-
----
-
-# 📈 Dashboard Features
-
-Dashboard menyajikan berbagai metrik utama, antara lain:
-
-- Total Revenue
-- Total Transactions
-- Unique Users
-- Average Transaction Value
+- Revenue Overview
 - Revenue by Package Type
-- Revenue by Cluster Type
+- Revenue by Cluster
 - Transaction Status Distribution
 - Top Users by Spending
-- Interactive Filters (Tanggal, Status, Package Type, Counseling Type)
+- Interactive Filters
 
 ---
 
-# 💡 Key Findings
-
-Berdasarkan hasil analisis, diperoleh beberapa insight utama:
-
-- Paket **konseling** menghasilkan revenue tertinggi dibandingkan kategori layanan lainnya.
-- Sekitar **74,8% transaksi** berhasil diselesaikan, menunjukkan mayoritas pembayaran berstatus sukses.
-- Revenue menunjukkan distribusi yang berbeda pada setiap cluster layanan.
-- Sejumlah pelanggan memiliki total transaksi jauh di atas rata-rata sehingga berpotensi menjadi target program retensi pelanggan.
-
----
-
-# 📂 Project Structure
-
-Repository ini disusun untuk memisahkan dataset, query SQL, dan dashboard sehingga setiap tahapan analisis dapat ditelusuri dengan mudah.
+# 📂 Repository Structure
 
 ```text
 .
 ├── Data/
 │   └── Database.xlsx
-│
 ├── SQL/
 │   ├── (1) Top Spender User.sql
 │   ├── (2) Total Penjualan per Cluster per Tahun.sql
 │   └── (3) Penjualan Paket Tertinggi per packageType.sql
-│
 ├── Dashboard/
 │   ├── assets/
 │   │   └── dashboard_preview.png
 │   └── looker_studio_link.md
-│
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -280,47 +202,27 @@ Repository ini disusun untuk memisahkan dataset, query SQL, dan dashboard sehing
 
 # 🛠 Tools
 
-| Category | Tools |
-| --- | --- |
-| Database | PostgreSQL |
-| SQL Client | DBeaver |
-| Dashboard | Looker Studio |
-| Data Source | Google Sheets / Microsoft Excel |
-| Version Control | Git & GitHub |
+- PostgreSQL
+- DBeaver
+- Looker Studio
+- Microsoft Excel / Google Sheets
+- Git & GitHub
 
 ---
 
 # 💼 Skills Demonstrated
 
-### Data Analysis
-
-- Exploratory Data Analysis (EDA)
+- SQL
+- Data Analysis
 - Business Analysis
-- KPI Analysis
-- Data Interpretation
-
-### SQL
-
-- Multi-table JOIN
+- Relational Database
+- Window Function
 - Data Aggregation
-- Window Functions
-- Ranking
-- Filtering
-- Data Transformation
-
-### Business Intelligence
-
 - Dashboard Development
-- Interactive Reporting
 - Data Visualization
-- Business Reporting
 
 ---
 
 # 🚀 Conclusion
 
-Project ini merupakan studi kasus analisis data transaksi layanan konseling menggunakan **PostgreSQL** dan **Looker Studio**.
-
-Melalui tiga business question yang diberikan, dilakukan proses analisis terhadap database relasional untuk menghasilkan insight bisnis yang relevan, kemudian divisualisasikan ke dalam dashboard interaktif agar lebih mudah dipahami oleh stakeholder.
-
-Selain menunjukkan kemampuan menulis query SQL, project ini juga menggambarkan proses berpikir seorang Data Analyst dalam memahami kebutuhan bisnis, mengolah data relasional, serta menyampaikan hasil analisis dalam bentuk visual yang siap digunakan sebagai pendukung pengambilan keputusan.
+Project ini menunjukkan proses analisis data relasional mulai dari memahami struktur database, menyusun query SQL untuk menjawab kebutuhan bisnis, hingga menyajikan hasil analisis dalam dashboard interaktif. Selain menghasilkan insight, project ini juga mendemonstrasikan penerapan konsep SQL seperti JOIN, agregasi, type casting, dan window function dalam studi kasus Data Analyst.
